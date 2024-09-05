@@ -13,7 +13,10 @@ const fetchData = require("./utils/fetchData");
 const serveStatic = express.static(pathToDistFolder);
 
 const serveGifs = async (req, res, next) => {
-	const API_URL = `https://api.giphy.com/v1/gifs/trending?api_key=${process.env.API_KEY}&limit=25&rating=g`;
+	const search = req.query.search;
+	const API_URL = search
+		? `https://api.giphy.com/v1/gifs/search?api_key=${process.env.API_KEY}&q=${search}&limit=25&rating=g`
+		: `https://api.giphy.com/v1/gifs/trending?api_key=${process.env.API_KEY}&limit=25&rating=g`;
 	const [data, error] = await fetchData(API_URL);
 	if (error) {
 		console.log(error.message);
@@ -22,9 +25,14 @@ const serveGifs = async (req, res, next) => {
 	res.send(data);
 };
 
+// const serveGifsSearch = async (req, res, next) => {
+// 	const q = req.query.q ?? "";
+// };
+
 app.use(serveStatic);
 
 app.get("/api/gifs", serveGifs);
+// app.get("/api/gifs/search", serveGifsSearch);
 
 const port = 8080;
 app.listen(port, () => {

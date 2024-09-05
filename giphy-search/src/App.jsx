@@ -11,6 +11,7 @@ const URL = `/api/gifs`;
 function App() {
 	const [gifs, setGifs] = useState([]);
 	const [errorMessage, setErrorMessage] = useState("");
+	const [search, setSearch] = useState("");
 
 	useEffect(() => {
 		const doFetch = async () => {
@@ -26,6 +27,11 @@ function App() {
 			<NavBar
 				color='black'
 				title='Giphy Search'
+			/>
+			<GifSearch
+				search={search}
+				setSearch={setSearch}
+				setGifs={setGifs}
 			/>
 			<div className='ui container'>
 				<GifContainer gifs={gifs} />
