@@ -4,7 +4,6 @@ import { handleFetch } from "../utils";
 function GifSearch({ search, setSearch, setGifs }) {
 	const handleSubmit = async e => {
 		e.preventDefault();
-		if (!search.length) return;
 		const [data, error] = await handleFetch(`/api/gifs?search=${search}`);
 		if (error) setErrorMessage(error.message);
 		if (data) setGifs(data.data);
@@ -30,7 +29,8 @@ function GifSearch({ search, setSearch, setGifs }) {
 			<button
 				type='submit'
 				className='btn btn-success'
-				onClick={handleSubmit}>
+				onClick={handleSubmit}
+				disabled={!search.length}>
 				Search
 			</button>
 		</form>
